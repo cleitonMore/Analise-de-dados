@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+
+import pandas as pd
+import sqlite3
+from rich.console import Console
+from rich.table import Table
+
+# Console para exibição no terminal
+console = Console()
+
+def load_csv_into_sqlite(file_path, conn):
+    """Carrega um arquivo CSV para uma tabela SQLite."""
+    try:
+        data = pd.read_csv(file_path)
+        table_name = 'listings'  # Nome fixo para a tabela
+        data.to_sql(table_name, conn, if_exists="replace", index=False)
+        console.log(f"Arquivo [green]{file_path}[/green] carregado como tabela '[cyan]{table_name}[/cyan]' no banco de dados SQLite.")
+    except Exception as e:
+        console.log(f"[red]Erro ao carregar {file_path}:[/red] {e}")
+
+def execute_sql_query(conn):
+    """Executa uma consulta SQL interativa no banco de dados e exibe no dashboard."""
+    console.print("\n[bold green]=== Consultas SQL ===[/bold green]")
+    console.print("Digite uma consulta SQL para executar no banco de dados.")
+    console.print("Exemplo: [cyan]SELECT * FROM listings LIMIT 5;[/cyan]")
+    console.print("Digite [bold red]'sair'[/bold red] para voltar ao menu principal.")
+    while True:
+        query = input("\nSQL> ")
+        if query.lower() == "sair":
+            break
+        try:
+            # Executar a consulta
+            result = pd.read_sql_query(query, conn)
+            
+            # Criar tabela para exibir o resultado
+            table = Table(title="Resultado da Consulta SQL", show_lines=True)
+            for column in result.columns:
+                table.add_column(column, overflow="fold", style="bold cyan")
+
+            # Adicionar linhas ao resultado
+            for _, row in result.iterrows():
+                table.add_row(*[str(value) for value in row])
+
+            console.print(table)
+
+        except Exception as e:
+            console.print(f"[red]Erro ao executar consulta:[/red] {e}")
+
+def main_menu():
+    """Exibe o menu principal no terminal."""
+    console.print("\n[bold cyan]=== Menu Principal ===[/bold cyan]")
+    console.print("1. Executar Consultas SQL")
+    console.print("2. Sair")
+    choice = input("\nEscolha uma opção: ")
+    return choice
+
+def main():
+    # Caminho genérico do arquivo CSV
+    file_path = "caminho/para/seu/arquivo/seu_arquivo.csv"  # Substitua pelo caminho do seu arquivo
+
+    # Conexão SQLite (em memória)
+    conn = sqlite3.connect(":memory:")
+
+    # Carregar o arquivo no SQLite
+    load_csv_into_sqlite(file_path, conn)
+
+    while True:
+        # Exibir menu principal
+        choice = main_menu()
+        
+        if choice == "1":
+            # Consultas SQL
+            execute_sql_query(conn)
+
+        elif choice == "2":
+            console.print("\n[bold red]Saindo...[/bold red]")
+            break
+
+        else:
+            console.print("[red]Opção inválida. Tente novamente.[/red]")
+
+    # Fechar conexão SQLite
+    conn.close()
+
+if __name__ == "__main__":
+    main()

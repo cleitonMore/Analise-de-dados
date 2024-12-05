@@ -6,7 +6,8 @@ Este projeto fornece uma ferramenta simples para carregar arquivos CSV em um ban
 
 - Carrega arquivos CSV no banco de dados SQLite.
 - Exibe resultados de consultas SQL no formato de tabelas interativas no terminal.
-- Permite execução de consultas SQL com feedback instantâneo.
+- Permite execução de consultas SQL com feedback instantâneo.7
+- Esse programa em python pode lê qualquer tipo de csv.
 
 ## Pré-requisitos
 

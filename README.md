@@ -1,18 +1,17 @@
-# Projeto de Inserção de Dados em Banco PostgreSQL
+# SQLite CSV Importer - Dashboard de Consultas SQL
 
-Este projeto tem como objetivo inserir dados de um arquivo CSV em uma tabela PostgreSQL, usando a linguagem Python. O processo inclui a leitura do arquivo CSV em chunks (partes) para evitar sobrecarga de memória e inserir os dados em uma tabela chamada `tabela_bronze_reviews`. Além disso, o código utiliza as bibliotecas `psycopg2` para conectar ao PostgreSQL e `pandas` para manipulação eficiente dos dados.
+Este projeto fornece uma ferramenta simples para carregar arquivos CSV em um banco de dados SQLite e executar consultas SQL interativas diretamente no terminal. Ele utiliza a biblioteca `pandas` para carregar os dados do CSV e a biblioteca `rich` para exibir resultados de forma elegante no terminal.
 
-## Requisitos
+## Funcionalidades
 
-Para executar este projeto, você precisará dos seguintes requisitos:
+- Carrega arquivos CSV no banco de dados SQLite.
+- Exibe resultados de consultas SQL no formato de tabelas interativas no terminal.
+- Permite execução de consultas SQL com feedback instantâneo.
 
-- Python 3.x
-- PostgreSQL (instalado e configurado)
-- Bibliotecas Python:
-  - `psycopg2`: Para interagir com o banco de dados PostgreSQL.
-  - `pandas`: Para manipulação e leitura de dados em CSV.
+## Pré-requisitos
 
-Você pode instalar as dependências necessárias usando o `pip`:
+Antes de executar o projeto, você precisa ter o Python 3.x e as bibliotecas necessárias instaladas. Você pode instalar as dependências com o seguinte comando:
 
 ```bash
-pip install psycopg2 pandas
+pip install pandas sqlite3 rich
+
